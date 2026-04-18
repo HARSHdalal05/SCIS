@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import JSON, Boolean, Column, Date, DateTime, Float, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import relationship
@@ -12,7 +12,7 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     mobile_number = Column(String(20), unique=True, index=True, nullable=False)
     is_verified = Column(Boolean, default=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
 
     fitness_profile = relationship("FitnessProfile", back_populates="user", uselist=False)
     avatar_state = relationship("AvatarState", back_populates="user", uselist=False)
@@ -40,7 +40,11 @@ class FitnessProfile(Base):
     macro_protein_g = Column(Float)
     macro_carbs_g = Column(Float)
     macro_fats_g = Column(Float)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_at = Column(
+        DateTime(timezone=True),
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
+    )
 
     user = relationship("User", back_populates="fitness_profile")
 
@@ -52,7 +56,7 @@ class WorkoutPlan(Base):
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), index=True)
     week_label = Column(String(20), default="week-1")
     plan_json = Column(JSON, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
 
 
 class DietPlan(Base):
@@ -63,7 +67,7 @@ class DietPlan(Base):
     day_label = Column(String(20), default="day-1")
     calories = Column(Float, nullable=False)
     plan_json = Column(JSON, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
 
 
 class ProgressLog(Base):
@@ -77,7 +81,7 @@ class ProgressLog(Base):
     protein_intake_g = Column(Float, default=0)
     weight_kg = Column(Float)
     notes = Column(Text)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
 
 
 class AvatarState(Base):
@@ -88,7 +92,11 @@ class AvatarState(Base):
     muscle_visibility_index = Column(Float, default=0.3)
     body_fat_estimate = Column(Float, default=25)
     consistency_score = Column(Float, default=0)
-    muscle_group_visibility = Column(JSON, nullable=False, default={})
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    muscle_group_visibility = Column(JSON, nullable=False, default=lambda: {})
+    updated_at = Column(
+        DateTime(timezone=True),
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
+    )
 
     user = relationship("User", back_populates="avatar_state")

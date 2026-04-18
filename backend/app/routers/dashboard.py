@@ -54,7 +54,7 @@ def dashboard_data(user_id: int = Query(...), db: Session = Depends(get_db)):
         progress=summary,
         avatar_state={
             "muscle_visibility_index": avatar.muscle_visibility_index if avatar else 0.3,
-            "body_fat_estimate": avatar.body_fat_estimate if avatar else profile.body_fat_percent,
+            "body_fat_estimate": avatar.body_fat_estimate if avatar else (profile.body_fat_percent or 25.0),
             "consistency_score": avatar.consistency_score if avatar else 0,
             "muscle_group_visibility": avatar.muscle_group_visibility if avatar else {},
         },

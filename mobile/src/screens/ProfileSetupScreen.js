@@ -12,7 +12,7 @@ export default function ProfileSetupScreen({ navigation, session }) {
     activity_level: 'moderate',
     fitness_goal: 'fat loss',
     diet_type: 'veg',
-    whey_protein: false,
+    whey_protein: 'false',
     workout_days_per_week: '5',
     training_level: 'beginner',
   });
@@ -26,11 +26,11 @@ export default function ProfileSetupScreen({ navigation, session }) {
         height_cm: Number(form.height_cm),
         weight_kg: Number(form.weight_kg),
         body_fat_percent: Number(form.body_fat_percent),
+        whey_protein: String(form.whey_protein).toLowerCase() === 'true',
         workout_days_per_week: Number(form.workout_days_per_week),
       };
       await api.saveProfile(session.userId, payload);
-      navigation.navigate('AILoading', { userId: session.userId });
-      setTimeout(() => navigation.replace('Dashboard'), 1200);
+      navigation.replace('AILoading', { userId: session.userId });
     } catch (e) {
       Alert.alert('Profile Error', e.message);
     }
@@ -40,7 +40,15 @@ export default function ProfileSetupScreen({ navigation, session }) {
     <ScrollView contentContainerStyle={{ padding: 16, gap: 8 }}>
       <Text>Profile Setup</Text>
       {Object.keys(form).map((k) => (
-        <TextInput key={k} value={String(form[k])} onChangeText={(v) => setForm((p) => ({ ...p, [k]: v }))} placeholder={k} style={{ borderWidth: 1, padding: 10 }} />
+        <TextInput
+          key={k}
+          value={String(form[k])}
+          onChangeText={(v) => setForm((p) => ({ ...p, [k]: v }))}
+          placeholder={k}
+          accessibilityLabel={`Profile field ${k}`}
+          accessibilityHint={`Enter value for ${k}`}
+          style={{ borderWidth: 1, padding: 10 }}
+        />
       ))}
       <Button title="Generate AI Plans" onPress={onSave} />
     </ScrollView>

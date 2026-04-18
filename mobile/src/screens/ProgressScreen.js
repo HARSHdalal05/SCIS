@@ -5,7 +5,7 @@ import { api } from '../api/client';
 export default function ProgressScreen({ session }) {
   const [log, setLog] = useState({
     log_date: new Date().toISOString().slice(0, 10),
-    workout_completed: true,
+    workout_completed: 'true',
     calories_consumed: '2000',
     protein_intake_g: '120',
     weight_kg: '77',
@@ -35,7 +35,15 @@ export default function ProgressScreen({ session }) {
     <ScrollView contentContainerStyle={{ padding: 16, gap: 8 }}>
       <Text>Daily Progress Tracker</Text>
       {Object.keys(log).map((k) => (
-        <TextInput key={k} value={String(log[k])} onChangeText={(v) => setLog((p) => ({ ...p, [k]: v }))} placeholder={k} style={{ borderWidth: 1, padding: 10 }} />
+        <TextInput
+          key={k}
+          value={String(log[k])}
+          onChangeText={(v) => setLog((p) => ({ ...p, [k]: v }))}
+          placeholder={k}
+          accessibilityLabel={`Progress field ${k}`}
+          accessibilityHint={`Enter value for ${k}`}
+          style={{ borderWidth: 1, padding: 10 }}
+        />
       ))}
       <Button title="Update Progress" onPress={submit} />
       {result && <Text>{`Score: ${result.weekly_progress_score} | ${result.ai_feedback_summary}`}</Text>}

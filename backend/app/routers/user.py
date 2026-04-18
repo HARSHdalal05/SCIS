@@ -22,7 +22,7 @@ def create_user(payload: UserCreateRequest, db: Session = Depends(get_db)):
 
 
 @router.post("/profile", response_model=FitnessProfileResponse)
-def upsert_profile(user_id: int = Query(...), payload: FitnessProfileRequest = None, db: Session = Depends(get_db)):
+def upsert_profile(payload: FitnessProfileRequest, user_id: int = Query(...), db: Session = Depends(get_db)):
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
@@ -37,8 +37,17 @@ def upsert_profile(user_id: int = Query(...), payload: FitnessProfileRequest = N
         profile = FitnessProfile(user_id=user_id)
         db.add(profile)
 
-    for key, value in payload.model_dump().items():
-        setattr(profile, key, value)
+    profile.age = payload.age
+    profile.gender = payload.gender
+    profile.height_cm = payload.height_cm
+    profile.weight_kg = payload.weight_kg
+    profile.body_fat_percent = payload.body_fat_percent
+    profile.activity_level = payload.activity_level
+    profile.fitness_goal = payload.fitness_goal
+    profile.diet_type = payload.diet_type
+    profile.whey_protein = payload.whey_protein
+    profile.workout_days_per_week = payload.workout_days_per_week
+    profile.training_level = payload.training_level
 
     profile.bmi = bmi
     profile.bmr = bmr

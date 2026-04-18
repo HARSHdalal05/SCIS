@@ -10,8 +10,6 @@ export default function DashboardScreen({ navigation, session }) {
   const load = useCallback(async () => {
     try {
       if (!session.userId) return;
-      await api.generateWorkout(session.userId);
-      await api.generateDiet(session.userId);
       const d = await api.getDashboard(session.userId);
       setData(d);
     } catch (e) {

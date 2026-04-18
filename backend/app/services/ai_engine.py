@@ -152,6 +152,7 @@ def calculate_consistency_score(logs: List[Dict], profile: Dict) -> float:
 
 
 def update_avatar_state(bmi: float, body_fat_percent: float | None, consistency_score: float, prev_visibility: float = 0.3):
+    """Compute gradual, realistic muscle-visibility updates from BMI/body-fat/consistency."""
     bf = body_fat_percent if body_fat_percent is not None else min(max((bmi - 15) * 1.8, 10), 40)
     target = 0.9 - (bf / 100) + (consistency_score / 300)
     target = max(0.15, min(target, 0.9))

@@ -1,4 +1,7 @@
-const API_BASE = 'http://localhost:8000';
+const API_BASE =
+  process.env.EXPO_PUBLIC_API_BASE ||
+  process.env.REACT_APP_API_BASE ||
+  'http://localhost:8000';
 
 async function request(path, options = {}) {
   const response = await fetch(`${API_BASE}${path}`, {

@@ -64,11 +64,12 @@ docker compose up -d
 2. Setup backend:
 
 ```bash
-cd /home/runner/work/SCIS/SCIS/backend
+cd backend
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env
+# keep APP_ENV=development for local runs
 uvicorn app.main:app --reload
 ```
 
@@ -77,8 +78,9 @@ uvicorn app.main:app --reload
 ## Mobile Setup (React Native / Expo)
 
 ```bash
-cd /home/runner/work/SCIS/SCIS/mobile
+cd mobile
 npm install
+export EXPO_PUBLIC_API_BASE=http://localhost:8000
 npm run start
 ```
 

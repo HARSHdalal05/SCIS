@@ -23,7 +23,9 @@ export default function App() {
         <Stack.Screen name="ProfileSetup">
           {(props) => <ProfileSetupScreen {...props} session={session} />}
         </Stack.Screen>
-        <Stack.Screen name="AILoading" component={AILoadingScreen} />
+        <Stack.Screen name="AILoading">
+          {(props) => <AILoadingScreen {...props} session={session} />}
+        </Stack.Screen>
         <Stack.Screen name="Dashboard">
           {(props) => <DashboardScreen {...props} session={session} />}
         </Stack.Screen>

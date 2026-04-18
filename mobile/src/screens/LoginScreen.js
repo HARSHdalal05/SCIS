@@ -20,8 +20,25 @@ export default function LoginScreen({ navigation, setSession }) {
   return (
     <View style={{ padding: 16, gap: 10 }}>
       <Text>FitMorph AI Login (OTP)</Text>
-      <TextInput placeholder="Mobile number" value={mobile} onChangeText={setMobile} style={{ borderWidth: 1, padding: 10 }} />
-      <TextInput placeholder="OTP" value={otp} onChangeText={setOtp} style={{ borderWidth: 1, padding: 10 }} />
+      <TextInput
+        placeholder="Mobile number"
+        value={mobile}
+        onChangeText={setMobile}
+        keyboardType="phone-pad"
+        accessibilityLabel="Mobile number"
+        accessibilityHint="Enter your mobile number"
+        style={{ borderWidth: 1, padding: 10 }}
+      />
+      <TextInput
+        placeholder="OTP"
+        value={otp}
+        onChangeText={setOtp}
+        keyboardType="number-pad"
+        secureTextEntry
+        accessibilityLabel="OTP code"
+        accessibilityHint="Enter the one-time password sent to your phone"
+        style={{ borderWidth: 1, padding: 10 }}
+      />
       <Button title="Login" onPress={handleLogin} />
       <Text>Use OTP: 123456 (MVP mock)</Text>
     </View>
